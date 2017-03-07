@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.example.rent.movieapp"
         minSdkVersion 16
         targetSdkVersion 25
@@ -17,6 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -26,4 +33,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.annimon:stream:1.1.6'
+    compile 'com.android.support:design:25.1.1'
+    compile 'info.android15.nucleus:nucleus:4.0.0'
+    compile 'info.android15.nucleus:nucleus-support-v7:4.0.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
