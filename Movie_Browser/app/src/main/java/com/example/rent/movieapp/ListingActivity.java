@@ -15,6 +15,9 @@ import android.widget.ViewFlipper;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Consumer;
 
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
 
@@ -38,9 +41,22 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipperID);
         noInternetImage = (ImageView) findViewById(R.id.noInternetImageViewID);
 
-        getPresenter().getDataAsync(title);
+        getPresenter().getDataAsync(title)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::success, this::error);
+
     }
 
+    private void error(Throwable throwable) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternetImage));
+    }
+
+
+    private void success(SearchResult searchResult) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
+        adapter.setItems(searchResult.getItems());
+    }
 
 
     public static Intent createIntent(Context context, String title){
