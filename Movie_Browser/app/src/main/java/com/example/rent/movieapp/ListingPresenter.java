@@ -22,6 +22,7 @@ public class ListingPresenter extends Presenter<ListingActivity> {
             public void run () {
                 try {
                     String result = getData(title);
+                    //TODO przerabia info z Gsona na przyjazny format dla androida
                     SearchResult searchResult = new Gson().fromJson(result, SearchResult.class);
                     getView().setDataOnUiThread(searchResult);
                 } catch (IOException e) {
@@ -30,6 +31,7 @@ public class ListingPresenter extends Presenter<ListingActivity> {
         }.start();
     }
 
+    //TODO metoda do pobierania danych z adresu URL
     public String getData(String title) throws IOException {
         String stringUrl = "https://www.omdbapi.com/?s" + title;
         URL url = new URL(stringUrl);

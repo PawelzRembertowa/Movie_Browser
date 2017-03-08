@@ -30,6 +30,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
     public void setDataOnUiThread(SearchResult result) {
+        //TODO powrot do watku glownego
         runOnUiThread(() -> {
             Stream.of(result.getItems()).forEach(movieListingItem -> {
                 Log.d("result", "id" + movieListingItem.getImdbID());
