@@ -24,8 +24,9 @@ public class ListingPresenter extends Presenter<ListingActivity> {
                     String result = getData(title);
                     //TODO przerabia info z Gsona na przyjazny format dla androida
                     SearchResult searchResult = new Gson().fromJson(result, SearchResult.class);
-                    getView().setDataOnUiThread(searchResult);
+                    getView().setDataOnUiThread(searchResult, false);
                 } catch (IOException e) {
+                    getView().setDataOnUiThread(null, true);
                 }
             }
         }.start();
@@ -36,6 +37,8 @@ public class ListingPresenter extends Presenter<ListingActivity> {
         String stringUrl = "https://www.omdbapi.com/?s" + title;
         URL url = new URL(stringUrl);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        //TODO ustawiamy czas na ,,Timeout''
+        urlConnection.setConnectTimeout(5000);
         InputStream inputStream = urlConnection.getInputStream();
         return convertStreamToString(inputStream);
     }
