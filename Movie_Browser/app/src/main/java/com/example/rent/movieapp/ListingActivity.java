@@ -32,13 +32,21 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
         String title = getIntent().getStringExtra(SEARCH_TITLE);
-        RecyclerView recyclerView= (RecyclerView) findViewById(R.id.recycler_viewID);
+        recyclerView= (RecyclerView) findViewById(R.id.recycler_viewID);
         adapter = new MovieListAdapter();
         recyclerView.setAdapter(adapter);
         viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipperID);
         noInternetImage = (ImageView) findViewById(R.id.noInternetImageViewID);
 
         getPresenter().getDataAsync(title);
+    }
+
+
+
+    public static Intent createIntent(Context context, String title){
+        Intent intent = new Intent(context, ListingActivity.class);
+        intent.putExtra(SEARCH_TITLE, title);
+        return intent;
     }
 
     public void setDataOnUiThread(SearchResult result, boolean isProblemWithInternetConnection) {
@@ -51,15 +59,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
                 viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
                 adapter.setItems(result.getItems());
             }
-            });
+        });
     }
-
-    public static Intent createIntent(Context context, String title){
-        Intent intent = new Intent(context, ListingActivity.class);
-        intent.putExtra(SEARCH_TITLE, title);
-        return intent;
-    }
-
-
 
 }

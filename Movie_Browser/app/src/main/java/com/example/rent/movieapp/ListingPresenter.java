@@ -38,7 +38,7 @@ public class ListingPresenter extends Presenter<ListingActivity> {
         URL url = new URL(stringUrl);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         //TODO ustawiamy czas na ,,Timeout''
-        urlConnection.setConnectTimeout(5000);
+        urlConnection.setConnectTimeout(3000);
         InputStream inputStream = urlConnection.getInputStream();
         return convertStreamToString(inputStream);
     }
