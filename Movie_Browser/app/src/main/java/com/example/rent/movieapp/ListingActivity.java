@@ -15,6 +15,9 @@ import android.widget.ViewFlipper;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Consumer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -26,20 +29,25 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
     private static final String SEARCH_TITLE = "search title";
     private MovieListAdapter adapter;
-    private ViewFlipper viewFlipper;
-    private ImageView noInternetImage;
-    private RecyclerView recyclerView;
+
+    @BindView(R.id.viewFlipperID)
+    ViewFlipper viewFlipper;
+
+    @BindView(R.id.noInternetImageViewID)
+    ImageView noInternetImage;
+
+    @BindView(R.id.recycler_viewID)
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
         String title = getIntent().getStringExtra(SEARCH_TITLE);
-        recyclerView= (RecyclerView) findViewById(R.id.recycler_viewID);
+        ButterKnife.bind(this);
         adapter = new MovieListAdapter();
         recyclerView.setAdapter(adapter);
-        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipperID);
-        noInternetImage = (ImageView) findViewById(R.id.noInternetImageViewID);
+
 
         getPresenter().getDataAsync(title)
                 .subscribeOn(Schedulers.io())
@@ -47,6 +55,12 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
                 .subscribe(this::success, this::error);
 
     }
+
+    @OnClick(R.id.noInternetImageViewID)
+    public void onNoInternetViewClick(View view){
+    Toast.makeText(this, "Kliknalem no internet image view", Toast.LENGTH_LONG).show();
+    }
+
 
     private void error(Throwable throwable) {
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternetImage));
