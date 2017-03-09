@@ -1,5 +1,8 @@
 package com.example.rent.movieapp;
 
+import android.widget.NumberPicker;
+
+import butterknife.BindView;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -11,7 +14,10 @@ import retrofit2.http.Query;
  */
 
 public interface SearchService {
+
+
+
     @GET("/")
 
-    Observable<SearchResult> search(@Query("s") String title);
+    Observable<SearchResult> search(@Query("s") String title, @Query("y")String year, @Query("type")String type);
 }

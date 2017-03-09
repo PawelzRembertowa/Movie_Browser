@@ -38,5 +38,69 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <CheckBox
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/year_checkboxID"
+        android:layout_below="@+id/textInputLayoutID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Film z roku:"/>
+
+    <NumberPicker
+        android:id="@+id/numberPickerID"
+        android:layout_marginLeft="26dp"
+        android:visibility="gone"
+        android:layout_below="@+id/year_checkboxID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </NumberPicker>
+
+    <CheckBox
+        android:id="@+id/type_checkboxID"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textInputLayoutID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Film typu:"/>
+
+    <RadioGroup
+        android:id="@+id/radio_groupID"
+        android:visibility="gone"
+        android:layout_below="@+id/type_checkboxID"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/radio_moviesID"
+            android:text="Filmy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radio_serialsID"
+            android:text="Seriale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radio_gamesID"
+            android:text="Gry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radio_episodesID"
+            android:text="Odcinki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RadioGroup>
 
 </RelativeLayout>
