@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -24,7 +25,7 @@ import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
 
 @RequiresPresenter(ListingPresenter.class)
-public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> {
+public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener, ShowOrHideCounter{
 
     private static final String SEARCH_TITLE = "search title";
     private static final String SEARCH_YEAR = "search year";
@@ -44,6 +45,9 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @BindView(R.id.no_resultsID)
     FrameLayout noResults;
     private EndlessScrollListener endlessScrollListener;
+
+    @BindView(R.id.counter_ID)
+    TextView counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +70,8 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         recyclerView.setLayoutManager(layoutManager);
         endlessScrollListener = new EndlessScrollListener(layoutManager, getPresenter());
         recyclerView.addOnScrollListener(endlessScrollListener);
-
-
+        endlessScrollListener.setCurrentItemListener(this);
+        endlessScrollListener.setShowOrHideCounter(this);
 
         getPresenter().getDataAsync(title, year, type)
                 .subscribeOn(Schedulers.io())
@@ -125,4 +129,19 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         return intent;
     }
 
+    @Override
+    public void onNewCurrentItem(int currentItem, int totalItemsCount) {
+        counter.setText(currentItem + "/" + totalItemsCount);
+    }
+
+    @Override
+    public void showCounter() {
+        counter.setVisibility(View.GONE);
+        counter.animate().translationX(0).start();
+    }
+
+    @Override
+    public void hideCounter() {
+        counter.animate().translationX(counter.getWidth()*2).start();
+    }
 }
