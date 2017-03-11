@@ -51,4 +51,5 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:2.0.1"
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.azoft.carousellayoutmanager:carousel:1.2.1'
 }

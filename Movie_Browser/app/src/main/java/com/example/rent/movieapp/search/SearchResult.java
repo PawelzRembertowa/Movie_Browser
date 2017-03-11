@@ -1,5 +1,6 @@
-package com.example.rent.movieapp;
+package com.example.rent.movieapp.search;
 
+import com.example.rent.movieapp.listing.MovieListingItem;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -26,5 +27,13 @@ public class SearchResult {
 
     public String getResponse() {
         return response;
+    }
+
+    public void setItems(List<MovieListingItem> items) {
+        this.items = items;
+    }
+
+    public void setTotalResults(String totalResults) {
+        this.totalResults = totalResults;
     }
 }

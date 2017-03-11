@@ -6,7 +6,7 @@
     android:id="@+id/activity_listing"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rent.movieapp.ListingActivity">
+    tools:context="com.example.rent.movieapp.listing.ListingActivity">
 
     <ViewFlipper
         android:id="@+id/viewFlipperID"

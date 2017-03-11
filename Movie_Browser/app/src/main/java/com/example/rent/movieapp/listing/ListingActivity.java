@@ -1,25 +1,23 @@
-package com.example.rent.movieapp;
+package com.example.rent.movieapp.listing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-
-import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
+import com.example.rent.movieapp.R;
+import com.example.rent.movieapp.RetrofitProvider;
+import com.example.rent.movieapp.search.SearchResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import nucleus.factory.RequiresPresenter;
@@ -45,19 +43,30 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
     @BindView(R.id.no_resultsID)
     FrameLayout noResults;
+    private EndlessScrollListener endlessScrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing);
-        ButterKnife.bind(this);
+
+        if(savedInstanceState==null) {
+            RetrofitProvider retrofitProvider = (RetrofitProvider) getApplication();
+            getPresenter().setRetrofit(retrofitProvider.provideRetrofit());
+        }
 
         String title = getIntent().getStringExtra(SEARCH_TITLE);
-        int year = getIntent().getIntExtra(SEARCH_YEAR, NO_YEAR_SELECTED);
         String type = getIntent().getStringExtra(SEARCH_TYPE);
+        int year = getIntent().getIntExtra(SEARCH_YEAR, NO_YEAR_SELECTED);
 
+        ButterKnife.bind(this);
         adapter = new MovieListAdapter();
         recyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        endlessScrollListener = new EndlessScrollListener(layoutManager, getPresenter());
+        recyclerView.addOnScrollListener(endlessScrollListener);
+
 
 
         getPresenter().getDataAsync(title, year, type)
@@ -77,13 +86,20 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternetImage));
     }
 
+    public void appendItems (SearchResult searchResult) {
+        adapter.addItems(searchResult.getItems());
+        endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
+    }
+
 
     private void success(SearchResult searchResult) {
+
         if ("False".equalsIgnoreCase(searchResult.getResponse())) {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noResults));
         } else {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
             adapter.setItems(searchResult.getItems());
+            endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
         }
     }
 
