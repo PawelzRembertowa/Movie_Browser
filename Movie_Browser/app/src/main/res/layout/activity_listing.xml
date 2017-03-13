@@ -19,12 +19,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_viewID"
-        app:layoutManager="LinearLayoutManager"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refreshID"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_viewID"
+            app:layoutManager="LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/noInternetImageViewID"
@@ -54,7 +62,6 @@
     <TextView
 
         android:id="@+id/counter_ID"
-        android:visibility="gone"
         android:textSize="16sp"
         android:layout_gravity="right|bottom"
         android:layout_margin="16dp"
@@ -63,6 +70,7 @@
         android:background="@color/semiTransparentBlack"
         android:padding="16dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </FrameLayout>

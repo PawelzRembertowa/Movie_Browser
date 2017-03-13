@@ -3,6 +3,7 @@ package com.example.rent.movieapp.listing;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -49,6 +50,9 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @BindView(R.id.counter_ID)
     TextView counter;
 
+    @BindView(R.id.swipe_refreshID)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +77,22 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
         endlessScrollListener.setCurrentItemListener(this);
         endlessScrollListener.setShowOrHideCounter(this);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                startLoading(title, year, type);
+            }
+        });
+
+        startLoading(title, year, type);
+
+    }
+
+    private void startLoading(String title, int year, String type) {
         getPresenter().getDataAsync(title, year, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::success, this::error);
-
     }
 
     @OnClick(R.id.noInternetImageViewID)
@@ -87,6 +102,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
 
     private void error(Throwable throwable) {
+        swipeRefreshLayout.setRefreshing(false);
         viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noInternetImage));
     }
 
@@ -97,11 +113,11 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
 
     private void success(SearchResult searchResult) {
-
+        swipeRefreshLayout.setRefreshing(false);
         if ("False".equalsIgnoreCase(searchResult.getResponse())) {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noResults));
         } else {
-            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(recyclerView));
+            viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(swipeRefreshLayout));
             adapter.setItems(searchResult.getItems());
             endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
         }
@@ -132,6 +148,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @Override
     public void onNewCurrentItem(int currentItem, int totalItemsCount) {
         counter.setText(currentItem + "/" + totalItemsCount);
+        counter.setVisibility(View.VISIBLE);
     }
 
     @Override
