@@ -15,6 +15,7 @@ import android.widget.ViewFlipper;
 
 import com.example.rent.movieapp.R;
 import com.example.rent.movieapp.RetrofitProvider;
+import com.example.rent.movieapp.detail.DetailActivity;
 import com.example.rent.movieapp.search.SearchResult;
 
 import butterknife.BindView;
@@ -26,7 +27,7 @@ import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusAppCompatActivity;
 
 @RequiresPresenter(ListingPresenter.class)
-public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener, ShowOrHideCounter{
+public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> implements CurrentItemListener, ShowOrHideCounter, OnMovieItemClickListener {
 
     private static final String SEARCH_TITLE = "search title";
     private static final String SEARCH_YEAR = "search year";
@@ -69,6 +70,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
         ButterKnife.bind(this);
         adapter = new MovieListAdapter();
+        adapter.setOnMovieItemClickListener(this);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -160,5 +162,10 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @Override
     public void hideCounter() {
         counter.animate().translationX(counter.getWidth()*2).start();
+    }
+
+    @Override
+    public void onMovieItemClick(String imdbID) {
+        startActivity(DetailActivity.createIntent(this, imdbID));
     }
 }
