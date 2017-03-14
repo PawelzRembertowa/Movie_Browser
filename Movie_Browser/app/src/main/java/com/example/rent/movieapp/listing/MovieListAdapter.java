@@ -76,4 +76,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
         type = (TextView) itemView.findViewById(R.id.typeID);
     }
 }
+    class GamesViewHolder extends RecyclerView.ViewHolder {
+        ImageView poster;
+        TextView titleAndYear;
+
+        public GamesViewHolder(View itemView) {
+            super(itemView);
+            poster = (ImageView) itemView.findViewById(R.id.posterID);
+            titleAndYear = (TextView) itemView.findViewById(R.id.title_and_year_ID);
+        }
+    }
 }

@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".listing.ListingActivity" />
         <activity android:name=".detail.DetailActivity"></activity>
+
     </application>
 
 </manifest>

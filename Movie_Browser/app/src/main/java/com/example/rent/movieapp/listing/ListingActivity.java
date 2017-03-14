@@ -46,6 +46,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
     @BindView(R.id.no_resultsID)
     FrameLayout noResults;
+
     private EndlessScrollListener endlessScrollListener;
 
     @BindView(R.id.counter_ID)
