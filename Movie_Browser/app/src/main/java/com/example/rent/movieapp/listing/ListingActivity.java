@@ -54,6 +54,7 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
 
     @BindView(R.id.swipe_refreshID)
     SwipeRefreshLayout swipeRefreshLayout;
+    private ResultAggregator newAggregatorResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +93,8 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
     private void startLoading(String title, int year, String type) {
-        getPresenter().getDataAsync(title, year, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::success, this::error);
+        getPresenter().startLoadingItems(title, year, type);
+
     }
 
     @OnClick(R.id.noInternetImageViewID)
@@ -115,14 +114,14 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     }
 
 
-    private void success(SearchResult searchResult) {
+    private void success(ResultAggregator resultAggregator) {
         swipeRefreshLayout.setRefreshing(false);
-        if ("False".equalsIgnoreCase(searchResult.getResponse())) {
+        if ("False".equalsIgnoreCase(resultAggregator.getResponse())) {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(noResults));
         } else {
             viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(swipeRefreshLayout));
-            adapter.setItems(searchResult.getItems());
-            endlessScrollListener.setTotalItemsNumber(Integer.parseInt(searchResult.getTotalResults()));
+            adapter.setItems(resultAggregator.getMovieItems());
+            endlessScrollListener.setTotalItemsNumber(resultAggregator.getTotalItemsResults());
         }
     }
 
@@ -168,5 +167,9 @@ public class ListingActivity extends NucleusAppCompatActivity<ListingPresenter> 
     @Override
     public void onMovieItemClick(String imdbID) {
         startActivity(DetailActivity.createIntent(this, imdbID));
+    }
+
+    public void setNewAggregatorResult(ResultAggregator newAggregatorResult) {
+        success(newAggregatorResult);
     }
 }

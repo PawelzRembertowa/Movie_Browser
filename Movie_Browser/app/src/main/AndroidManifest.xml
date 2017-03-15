@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".listing.ListingActivity" />
-        <activity android:name=".detail.DetailActivity"></activity>
-
+        <activity android:name=".detail.DetailActivity" />
+        <activity android:name=".detail.gallery.GalleryActivity"></activity>
     </application>
 
 </manifest>

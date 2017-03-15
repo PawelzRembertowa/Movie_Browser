@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.rent.movieapp.R;
 import com.example.rent.movieapp.RetrofitProvider;
+import com.example.rent.movieapp.detail.gallery.GalleryActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,8 @@ public class DetailActivity extends NucleusAppCompatActivity<DetailPresenter> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::success, this::error);
+
+
     }
 
 
@@ -69,10 +73,18 @@ public class DetailActivity extends NucleusAppCompatActivity<DetailPresenter> {
 
     private void success(MovieItem movieItem){
         Glide.with(this).load(movieItem.getPoster()).into(poster);
-        plot.setText(movieItem.getPlot());
-        director.setText(movieItem.getDirector());
-        actors.setText(movieItem.getActors());
-        runtime.setText(movieItem.getRuntime());
+
+        poster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GalleryActivity.startActivity(DetailActivity.this, movieItem.getPoster(),poster);
+            }
+        });
+
+//        plot.setText(movieItem.getPlot());
+//        director.setText(movieItem.getDirector());
+//        actors.setText(movieItem.getActors());
+//        runtime.setText(movieItem.getRuntime());
 
     }
 

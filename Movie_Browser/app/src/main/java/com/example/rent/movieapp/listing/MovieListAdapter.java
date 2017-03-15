@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rent.movieapp.R;
+import com.example.rent.movieapp.detail.MovieItem;
 
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +62,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
         this.items.addAll(items);
         notifyDataSetChanged();
     }
+
+
+
 
     //TODO viewHolder sluzy do wyszukiwania widokow, jak findbyviewID, tylko ze jest wydajniejsze
     class MyViewHolder extends RecyclerView.ViewHolder {
